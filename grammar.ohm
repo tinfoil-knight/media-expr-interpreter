@@ -1,4 +1,4 @@
-ExpressionLanguage {
+ExpressionLang {
   Program = Exp
   Exp     = LogicOr
   LogicOr = LogicAnd ("or" LogicAnd)*
@@ -9,9 +9,8 @@ ExpressionLanguage {
   Factor = Exponent ( ( "/" | "*" | "%" ) Exponent )*
   Exponent = Unary ( "^" Unary )*
 
-  // Unary = ( "!" | "-" ) Unary --unary
-  //        | Literal
-  Unary = Literal
+  Unary = ( "!" | "-" ) Unary --unary
+          | Literal
 
   
   Literal = "(" Exp ")"  --parens

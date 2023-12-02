@@ -1,11 +1,11 @@
 const associativity = { "+": "L", "-": "L", "*": "L", "/": "L", "^": "R" };
 
-function binaryExpression(first, ops, rest) {
+function binaryExpr(first, ops, rest) {
   if (associativity[ops[0]] === "L") {
-    const applyLeft = (x, y) => new BinaryExpression(x, ops.shift(), y);
+    const applyLeft = (x, y) => new BinaryExpr(x, ops.shift(), y);
     return [first, ...rest].reduce(applyLeft);
   } else {
-    const applyRight = (x, y) => new BinaryExpression(y, ops.pop(), x);
+    const applyRight = (x, y) => new BinaryExpr(y, ops.pop(), x);
     return [first, ...rest].reduceRight(applyRight);
   }
 }
@@ -19,7 +19,7 @@ class Program {
   }
 }
 
-class BinaryExpression {
+class BinaryExpr {
   constructor(left, op, right) {
     this.left = left;
     this.op = op;
@@ -27,6 +27,16 @@ class BinaryExpression {
   }
   toString() {
     return `(${this.op} ${this.left} ${this.right})`;
+  }
+}
+
+class UnaryExpr {
+  constructor(op, right) {
+    this.op = op;
+    this.right = right;
+  }
+  toString() {
+    return `(${this.op} ${this.right})`;
   }
 }
 
@@ -56,7 +66,7 @@ module.exports = {
     return expression.tree();
   },
   LogicOr(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -64,7 +74,7 @@ module.exports = {
     return ret;
   },
   LogicAnd(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -72,7 +82,7 @@ module.exports = {
     return ret;
   },
   Equality(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -80,7 +90,7 @@ module.exports = {
     return ret;
   },
   Comparison(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -88,7 +98,7 @@ module.exports = {
     return ret;
   },
   Term(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -96,7 +106,7 @@ module.exports = {
     return ret;
   },
   Factor(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
@@ -104,15 +114,15 @@ module.exports = {
     return ret;
   },
   Exponent(first, ops, rest) {
-    const ret = binaryExpression(
+    const ret = binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
     return ret;
   },
-  Unary(expression) {
-    return expression.tree();
+  Unary_unary(op, first) {
+    return new UnaryExpr(op.sourceString, first.tree());
   },
   Literal_parens(open, expression, close) {
     return expression.tree();
