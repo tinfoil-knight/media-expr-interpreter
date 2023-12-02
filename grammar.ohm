@@ -1,3 +1,31 @@
+ExpressionLanguage {
+  Program = Exp
+  Exp     = LogicOr
+  LogicOr = LogicAnd ("or" LogicAnd)*
+  LogicAnd = Equality ( "and" Equality )*
+  Equality = Comparison ( ( "!=" | "==" ) Comparison )*
+  Comparison = Term ( ( ">" | ">=" | "<" | "<=" ) Term )*
+  Term = Factor ( ( "-" | "+" ) Factor )*
+  Factor = Exponent ( ( "/" | "*" | "%" ) Exponent )*
+  Exponent = Unary ( "^" Unary )*
+
+  // Unary = ( "!" | "-" ) Unary --unary
+  //        | Literal
+  Unary = Literal
+
+  
+  Literal = "(" Exp ")"  --parens
+          | bool
+          | number
+          | id
+  bool = "true" | "false"
+  id      = letter alnum*
+  number  = digit+
+
+}
+
+/* 
+
 MediaExpr {
 	// Syntax Grammar (should start with Uppercase, ignores whitespace)
 	// Note: Math follows PEMDAS
@@ -39,3 +67,5 @@ MediaExpr {
 
 	identifier = letter alnum*
 }
+
+*/
