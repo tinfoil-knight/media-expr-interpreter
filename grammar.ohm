@@ -1,5 +1,7 @@
 ExpressionLang {
+  // Syntax Grammar
   Program = Exp
+
   Exp     = LogicOr
   LogicOr = LogicAnd ("or" LogicAnd)*
   LogicAnd = Equality ( "and" Equality )*
@@ -16,11 +18,15 @@ ExpressionLang {
   Literal = "(" Exp ")"  --parens
           | bool
           | number
-          | id
-  bool = "true" | "false"
-  id      = letter alnum*
-  number  = digit+
+          | variable
 
+  // Lexical Grammar
+  bool = "true" | "false"
+  number  = decimal | whole
+  decimal = digit* "." digit+
+  whole = digit+
+  
+  variable = letter alnum*
 }
 
 /* 

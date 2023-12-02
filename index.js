@@ -8,7 +8,7 @@ const semantics = grammar.createSemantics();
 
 semantics.addOperation("tree", astActions);
 
-const userInput = "-(1+2)^3";
+const userInput = "-(1+2.2)^3";
 const m = grammar.match(userInput);
 if (m.succeeded()) {
   const adapter = semantics(m);

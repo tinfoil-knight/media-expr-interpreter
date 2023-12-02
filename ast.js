@@ -10,15 +10,6 @@ function binaryExpr(first, ops, rest) {
   }
 }
 
-class Program {
-  constructor(expression) {
-    this.body = expression;
-  }
-  toString() {
-    return this.body.toString();
-  }
-}
-
 class BinaryExpr {
   constructor(left, op, right) {
     this.left = left;
@@ -30,38 +21,34 @@ class BinaryExpr {
   }
 }
 
-class UnaryExpr {
-  constructor(op, right) {
-    this.op = op;
-    this.right = right;
-  }
-  toString() {
-    return `(${this.op} ${this.right})`;
-  }
-}
-
-class IntegerLiteral {
-  constructor(value) {
-    this.value = value;
-  }
-  toString() {
-    return `${this.value}`;
-  }
-}
-
-class Identifier {
-  constructor(name) {
-    this.name = name;
-  }
-  toString() {
-    return this.name;
-  }
-}
-
 module.exports = {
   Program(body) {
+    class Program {
+      constructor(expression) {
+        this.body = expression;
+      }
+      toString() {
+        return this.body.toString();
+      }
+    }
     return new Program(body.tree());
   },
+  // Expression(expression) {
+  //   return expression.tree();
+  // },
+  // IfExpr(_if, _open, condition, _close, _then, first, _else, second) {
+  //   class IfExpr {
+  //     constructor(condition, left, right) {
+  //       this.condition = condition;
+  //       this.left = left;
+  //       this.right = this.right;
+  //     }
+  //     toString() {
+  //       return `if ${this.condition} then ${this.left} else ${this.right}`;
+  //     }
+  //   }
+  //   return new IfExpr(condition, first, second);
+  // },
   Exp(expression) {
     return expression.tree();
   },
@@ -122,17 +109,50 @@ module.exports = {
     return ret;
   },
   Unary_unary(op, first) {
+    class UnaryExpr {
+      constructor(op, right) {
+        this.op = op;
+        this.right = right;
+      }
+      toString() {
+        return `(${this.op} ${this.right})`;
+      }
+    }
     return new UnaryExpr(op.sourceString, first.tree());
   },
   Literal_parens(open, expression, close) {
     return expression.tree();
   },
+  bool(chars) {
+    class BoolLiteral {
+      constructor(value) {
+        this.value = value;
+      }
+      toString() {
+        return `${this.value}`;
+      }
+    }
+    return new BoolLiteral(this.sourceString === "true" ? true : false);
+  },
   number(chars) {
-    return new IntegerLiteral(+this.sourceString);
+    class NumberLiteral {
+      constructor(value) {
+        this.value = value;
+      }
+      toString() {
+        return `${this.value}`;
+      }
+    }
+    return new NumberLiteral(Number(this.sourceString));
   },
-  id(char, moreChars) {
-    return new Identifier(this.sourceString);
+  variable(char, moreChars) {
+    const constants = { h: 300, w: 200 };
+    if (!constants[this.sourceString]) {
+      throw new Error("variable not allowed", constants);
+    }
+    return new NumberLiteral(constants[this.sourceString]);
   },
+
   // Note that _terminal is now required. In the previous grammar, we never invoked the
   // semantic operation on an operator because it was not necessary. Because this new
   // grammar uses repetition, Ohm will invoke the operation on each operator behind the
