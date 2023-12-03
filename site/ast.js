@@ -9,6 +9,15 @@ class BinaryExpr {
   }
 }
 
+class NumberLiteral {
+  constructor(value) {
+    this.value = value;
+  }
+  toString() {
+    return `${this.value}`;
+  }
+}
+
 function binaryExpr(first, ops, rest) {
   const associativity = { "+": "L", "-": "L", "*": "L", "/": "L", "^": "R" };
   if (associativity[ops[0]] === "L") {
@@ -111,14 +120,6 @@ const astActions = {
     return new BoolLiteral(this.sourceString === "true" ? true : false);
   },
   number(chars) {
-    class NumberLiteral {
-      constructor(value) {
-        this.value = value;
-      }
-      toString() {
-        return `${this.value}`;
-      }
-    }
     return new NumberLiteral(Number(this.sourceString));
   },
   variable(char, moreChars) {
