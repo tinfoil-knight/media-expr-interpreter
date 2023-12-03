@@ -3,7 +3,7 @@ const ohm = require("ohm-js");
 const contents = fs.readFileSync("grammar.ohm", "utf-8");
 const grammar = ohm.grammar(contents);
 const astActions = require("./site/ast");
-const evaluateAST = require("./site/interpret");
+const { evaluateAST, astToPrefix } = require("./site/interpret");
 
 const semantics = grammar.createSemantics();
 
@@ -16,6 +16,7 @@ if (m.succeeded()) {
   const adapter = semantics(m);
   const util = require("util");
   console.log(
+    "AST",
     util.inspect(adapter.tree(), {
       showHidden: false,
       depth: null,
@@ -23,9 +24,10 @@ if (m.succeeded()) {
     })
   );
   const jsonS = JSON.stringify(adapter.tree(), null, 2);
-  const treet = JSON.parse(jsonS);
-  console.log("AST", jsonS);
-  console.log(evaluateAST(treet.body));
+  console.log("Raw AST", jsonS);
+  const ast = JSON.parse(jsonS);
+  console.log(astToPrefix(ast.body));
+  console.log(evaluateAST(ast.body));
 } else {
   console.log("Invalid");
 }

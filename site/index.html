@@ -46,12 +46,6 @@
       input.value = "";
       hideError();
 
-      function stringifyLisp(x) {
-        return Array.isArray(x)
-          ? "(" + x.map(stringifyLisp).join(" ") + ")"
-          : x.toString();
-      }
-
       input.oninput = function () {
         hideError();
         this.className = undefined;
@@ -62,7 +56,7 @@
           const adapter = s(r);
           const ast = JSON.parse(JSON.stringify(adapter.tree()));
           show("value", evaluateAST(ast.body));
-          // show("lisp", stringifyLisp(s(r).asLisp));
+          show("lisp", astToPrefix(ast.body));
           // show("tree", s(r).toTree());
         } else if (this.value.trim().length === 0) {
           // The match failed because there was no input, so don't complain. (That would be annoying.)
@@ -145,11 +139,11 @@
 
         setInput("33 * 5 + 100");
         assertEqual($("#value").textContent, "265", "value is correct");
-        // assertEqual(
-        //   $("#lisp").textContent,
-        //   "(+ (* 33 5) 100)",
-        //   "LISP representation is correct"
-        // );
+        assertEqual(
+          $("#lisp").textContent,
+          "(+ (* 33 5) 100)",
+          "LISP representation is correct"
+        );
       };
     </script>
   </body>

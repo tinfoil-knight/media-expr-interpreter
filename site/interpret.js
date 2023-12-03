@@ -61,4 +61,24 @@ function evaluateAST(ast) {
   }
 }
 
-module.exports = evaluateAST;
+function astToPrefix(ast) {
+  if ("op" in ast) {
+    if ("left" in ast) {
+      const opString = ast.op === "^" ? "pow" : ast.op;
+      return `(${opString} ${astToPrefix(ast.left)} ${astToPrefix(ast.right)})`;
+    } else {
+      const opToStr = {
+        "-": "neg",
+        "!": "not",
+      };
+      const opString = opToStr[ast.op] || ast.op;
+      return `(${opString} ${astToPrefix(ast.right)})`;
+    }
+  } else if ("value" in ast) {
+    return ast.value.toString();
+  } else {
+    throw new Error("Invalid AST node");
+  }
+}
+
+module.exports = { evaluateAST, astToPrefix };

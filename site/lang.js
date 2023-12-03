@@ -45,11 +45,6 @@ const s = g.createSemantics();
 
 s.addOperation("tree", astActions);
 
-const r = g.match("(2+4)*7"); // First, you need a successful `MatchResult`.
-const n = s(r); // Then, you apply the semantics to that match result to get a CST node,
-console.log(n.tree()); // ... on which you can access the functionality provided by the
-// semantics.
-
 // -------------------------------------------------------------------------------------------------
 
 const elt = makeElement;
