@@ -42,7 +42,12 @@ function evaluateAST(ast) {
     // for arithmetic ops, comparison ops
 
     if (isUnary) {
-      return -1 * rightValue;
+      switch (operator) {
+        case "-":
+          return -1 * rightValue;
+        case "!":
+          return !rightValue;
+      }
     }
     switch (operator) {
       // Logical
