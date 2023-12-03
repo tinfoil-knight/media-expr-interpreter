@@ -22,7 +22,7 @@ class BinaryExpr {
 }
 
 module.exports = {
-  Program(body) {
+  Main(body) {
     class Program {
       constructor(expression) {
         this.body = expression;
@@ -33,23 +33,7 @@ module.exports = {
     }
     return new Program(body.tree());
   },
-  // Expression(expression) {
-  //   return expression.tree();
-  // },
-  // IfExpr(_if, _open, condition, _close, _then, first, _else, second) {
-  //   class IfExpr {
-  //     constructor(condition, left, right) {
-  //       this.condition = condition;
-  //       this.left = left;
-  //       this.right = this.right;
-  //     }
-  //     toString() {
-  //       return `if ${this.condition} then ${this.left} else ${this.right}`;
-  //     }
-  //   }
-  //   return new IfExpr(condition, first, second);
-  // },
-  Exp(expression) {
+  Expression(expression) {
     return expression.tree();
   },
   LogicOr(first, ops, rest) {
