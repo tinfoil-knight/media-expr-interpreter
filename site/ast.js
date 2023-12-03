@@ -1,15 +1,3 @@
-const associativity = { "+": "L", "-": "L", "*": "L", "/": "L", "^": "R" };
-
-function binaryExpr(first, ops, rest) {
-  if (associativity[ops[0]] === "L") {
-    const applyLeft = (x, y) => new BinaryExpr(x, ops.shift(), y);
-    return [first, ...rest].reduce(applyLeft);
-  } else {
-    const applyRight = (x, y) => new BinaryExpr(y, ops.pop(), x);
-    return [first, ...rest].reduceRight(applyRight);
-  }
-}
-
 class BinaryExpr {
   constructor(left, op, right) {
     this.left = left;
@@ -21,9 +9,20 @@ class BinaryExpr {
   }
 }
 
-module.exports = {
+function binaryExpr(first, ops, rest) {
+  const associativity = { "+": "L", "-": "L", "*": "L", "/": "L", "^": "R" };
+  if (associativity[ops[0]] === "L") {
+    const applyLeft = (x, y) => new BinaryExpr(x, ops.shift(), y);
+    return [first, ...rest].reduce(applyLeft);
+  } else {
+    const applyRight = (x, y) => new BinaryExpr(y, ops.pop(), x);
+    return [first, ...rest].reduceRight(applyRight);
+  }
+}
+
+const astActions = {
   Main(body) {
-    class Program {
+    class Main {
       constructor(expression) {
         this.body = expression;
       }
@@ -31,66 +30,59 @@ module.exports = {
         return this.body.toString();
       }
     }
-    return new Program(body.tree());
+    return new Main(body.tree());
   },
   Expression(expression) {
     return expression.tree();
   },
   LogicOr(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   LogicAnd(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Equality(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Comparison(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Term(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Factor(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Exponent(first, ops, rest) {
-    const ret = binaryExpr(
+    return binaryExpr(
       first.tree(),
       ops.children.map((c) => c.tree()),
       rest.children.map((c) => c.tree())
     );
-    return ret;
   },
   Unary_unary(op, first) {
     class UnaryExpr {
@@ -104,7 +96,7 @@ module.exports = {
     }
     return new UnaryExpr(op.sourceString, first.tree());
   },
-  Literal_parens(open, expression, close) {
+  Literal_parens(_open, expression, _close) {
     return expression.tree();
   },
   bool(chars) {
@@ -136,12 +128,9 @@ module.exports = {
     }
     return new NumberLiteral(constants[this.sourceString]);
   },
-
-  // Note that _terminal is now required. In the previous grammar, we never invoked the
-  // semantic operation on an operator because it was not necessary. Because this new
-  // grammar uses repetition, Ohm will invoke the operation on each operator behind the
-  // scenes.
   _terminal() {
     return this.sourceString;
   },
 };
+
+module.exports = astActions;
