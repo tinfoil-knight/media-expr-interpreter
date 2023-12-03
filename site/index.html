@@ -31,7 +31,6 @@
     </div>
     <div id="value"></div>
     <div id="lisp"></div>
-    <div id="tree"></div>
     <script>
       /*
   This is the code that drives the UI in this demo.
@@ -53,16 +52,18 @@
         if (r.succeeded()) {
           // Notice that you can do many different things with the same match result, i.e., you only have
           // to process the input once.
+          console.log(input.value);
           const adapter = s(r);
-          const ast = JSON.parse(JSON.stringify(adapter.tree()));
+          const jsonString = JSON.stringify(adapter.tree(), null, 2);
+          const ast = JSON.parse(jsonString);
           show("value", evaluateAST(ast.body));
           show("lisp", astToPrefix(ast.body));
-          // show("tree", s(r).toTree());
+          console.log("AST for ", input.value);
+          console.dir(jsonString, { depth: null });
         } else if (this.value.trim().length === 0) {
           // The match failed because there was no input, so don't complain. (That would be annoying.)
           show("value", "");
           show("lisp", "");
-          show("tree", "");
         } else {
           showError(r);
         }

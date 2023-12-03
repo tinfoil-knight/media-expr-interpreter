@@ -1,0 +1,38 @@
+MediaExpr {
+  // Syntax Grammar
+  Main        = Expression
+  
+  Expression  = LogicOr
+  LogicOr     = LogicAnd ("or" LogicAnd)*
+  LogicAnd    = Equality ("and" Equality)*
+  Equality    = Comparison (("!=" | "==") Comparison)*
+  Comparison  = Term ((">" | ">=" | "<" | "<=") Term)*
+  
+  Term        = Factor (("-" | "+") Factor)*
+  Factor      = Exponent (("/" | "*" | "%") Exponent)*
+  Exponent    = Unary ("^" Unary)*
+  Unary       = ("!" | "-") Unary --unary
+                  | Literal
+  
+  Literal     = "(" Expression ")" --parens
+                  | bool
+                  | number
+                  | variable
+
+  // Lexical Grammar
+  bool       = "true" | "false"
+  number     = decimal | whole
+  decimal    = digit* "." digit+
+  whole      = digit+
+  
+  variable   = letter alnum*
+
+  /*
+  alnum (an alpha-numeric character) = letter
+      | digit
+  digit (a digit) = "0".."9"
+  letter (a letter) = lower
+      | upper
+      | unicodeLtmo
+  */
+}
