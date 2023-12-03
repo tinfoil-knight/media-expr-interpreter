@@ -145,7 +145,6 @@ wrapper {
 #value::before { content: 'value '; }
 #lisp::before  { content: 'prefix '; }
 #tree::before  { content: 'tree '; }
-#twoD::before  { content: '2-D '; }
 
 #value, #lisp, #tree, #twoD {
   padding: 8pt 0;
@@ -165,76 +164,4 @@ wrapper {
   font-size: 10pt;
   color: slateblue;
   border-bottom: 1pt solid slateblue;
-}
-
-#tree expr::before   { content: 'expr'; }
-#tree addExp::before { content: 'addExp'; }
-#tree plus::before   { content: 'plus'; }
-#tree minus::before  { content: 'minus'; }
-#tree mulExp::before { content: 'mulExp'; }
-#tree times::before  { content: 'times'; }
-#tree divide::before { content: 'divide'; }
-#tree expExp::before { content: 'expExp'; }
-#tree power::before  { content: 'power'; }
-#tree priExp::before { content: 'priExp'; }
-#tree paren::before  { content: 'paren'; }
-#tree pos::before    { content: 'pos'; }
-#tree neg::before    { content: 'neg'; }
-#tree ident::before  { content: 'ident'; }
-#tree number::before { content: 'number'; }
-
-#twoD {
-  font-family: Times, "Times New Roman", serif;
-  font-size: 18pt;
-}
-
-#twoD ident {
-  font-style: italic;
-}
-
-#twoD paren {
-  display: inline-block;
-  border-image: url('parens.png') 0 93 round stretch;
-  border-width: 0 7pt;
-  margin: 2px;
-}
-
-#twoD power > exponent > paren,
-#twoD fraction > numerator > paren,
-#twoD fraction > denominator > paren {
-  border-image: none;
-}
-
-#twoD operator {
-  margin: 0 4pt;
-}
-
-#twoD fraction {
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-}
-
-#twoD numerator, #twoD denominator {
-  padding: 0 4pt;
-}
-
-#twoD numerator {
-  display: block;
-  border-bottom: 2px solid black;
-  padding: 0 4pt;
-}
-
-#twoD denominator {
-  display: block;
-}
-
-#twoD exponent {
-  font-size: 70%;
-  vertical-align: text-top;
-  line-height: 0;
-}
-
-#twoD exponent > * {
-  line-height: 100%;
 }
